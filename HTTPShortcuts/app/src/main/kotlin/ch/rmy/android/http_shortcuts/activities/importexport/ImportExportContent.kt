@@ -10,6 +10,7 @@ import androidx.compose.material.icons.outlined.CloudDownload
 import androidx.compose.material.icons.outlined.Devices
 import androidx.compose.material.icons.outlined.Output
 import androidx.compose.material.icons.outlined.Share
+import androidx.compose.material.icons.outlined.Sync
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -24,6 +25,7 @@ fun ImportExportContent(
     onImportFromUrlClicked: () -> Unit,
     onExportToFileClicked: () -> Unit,
     onExportViaShareClicked: () -> Unit,
+    onSyncButtonClicked: () -> Unit,
     onRemoteEditButtonClicked: () -> Unit,
 ) {
     Column(
@@ -65,8 +67,13 @@ fun ImportExportContent(
         }
 
         SettingsGroup(
-            title = stringResource(R.string.settings_title_remote_edit),
+            title = stringResource(R.string.title_import_export_advanced_settings),
         ) {
+            SettingsButton(
+                icon = Icons.Outlined.Sync,
+                title = stringResource(R.string.settings_automatic_import_export),
+                onClick = onSyncButtonClicked,
+            )
             SettingsButton(
                 icon = Icons.Outlined.Devices,
                 title = stringResource(R.string.settings_remote_edit),
