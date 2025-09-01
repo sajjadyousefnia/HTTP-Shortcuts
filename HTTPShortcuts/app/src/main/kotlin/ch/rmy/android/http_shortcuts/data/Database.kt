@@ -14,6 +14,7 @@ import ch.rmy.android.http_shortcuts.data.domains.request_headers.RequestHeaderD
 import ch.rmy.android.http_shortcuts.data.domains.request_parameters.RequestParameterDao
 import ch.rmy.android.http_shortcuts.data.domains.sections.SectionDao
 import ch.rmy.android.http_shortcuts.data.domains.shortcuts.ShortcutDao
+import ch.rmy.android.http_shortcuts.data.domains.sync.SyncDao
 import ch.rmy.android.http_shortcuts.data.domains.variables.GlobalVariableDao
 import ch.rmy.android.http_shortcuts.data.domains.widgets.ShortcutWidgetDao
 import ch.rmy.android.http_shortcuts.data.domains.widgets.VariableWidgetDao
@@ -32,6 +33,7 @@ import ch.rmy.android.http_shortcuts.data.models.ResolvedVariableModel
 import ch.rmy.android.http_shortcuts.data.models.Section
 import ch.rmy.android.http_shortcuts.data.models.Shortcut
 import ch.rmy.android.http_shortcuts.data.models.ShortcutWidget
+import ch.rmy.android.http_shortcuts.data.models.SyncConfig
 import ch.rmy.android.http_shortcuts.data.models.VariableWidget
 import ch.rmy.android.http_shortcuts.data.models.WorkingDirectory
 
@@ -50,10 +52,11 @@ import ch.rmy.android.http_shortcuts.data.models.WorkingDirectory
         Section::class,
         Shortcut::class,
         ShortcutWidget::class,
+        SyncConfig::class,
         VariableWidget::class,
         WorkingDirectory::class,
     ],
-    version = 5,
+    version = 6,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
         AutoMigration(from = 2, to = 3),
@@ -63,6 +66,7 @@ import ch.rmy.android.http_shortcuts.data.models.WorkingDirectory
             spec = Migration4::class,
         ),
         AutoMigration(from = 4, to = 5),
+        AutoMigration(from = 5, to = 6),
     ],
     exportSchema = true,
 )
@@ -80,6 +84,7 @@ abstract class Database : RoomDatabase() {
     abstract fun sectionDao(): SectionDao
     abstract fun shortcutDao(): ShortcutDao
     abstract fun shortcutWidgetDao(): ShortcutWidgetDao
+    abstract fun syncDao(): SyncDao
     abstract fun variableWidgetDao(): VariableWidgetDao
     abstract fun workingDirectoryDao(): WorkingDirectoryDao
 }

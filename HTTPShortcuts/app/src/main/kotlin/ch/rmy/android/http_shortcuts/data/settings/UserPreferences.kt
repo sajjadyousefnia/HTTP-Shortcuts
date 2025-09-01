@@ -4,6 +4,7 @@ import android.content.Context
 import ch.rmy.android.framework.extensions.takeUnlessEmpty
 import ch.rmy.android.framework.utils.PreferencesStore
 import ch.rmy.android.http_shortcuts.data.enums.ShortcutClickBehavior
+import ch.rmy.android.http_shortcuts.data.enums.SyncType
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -68,6 +69,12 @@ constructor(
         get() = getBoolean(KEY_HISTORY_USE_RELATIVE_TIMES)
         set(value) = putBoolean(KEY_HISTORY_USE_RELATIVE_TIMES, value)
 
+    var syncType: SyncType?
+        get() = getString(KEY_SYNC_TYPE)?.let { SyncType.parse(it) }
+        set(value) {
+            putString(KEY_SYNC_TYPE, value?.value)
+        }
+
     private val _colorThemeFlow = MutableStateFlow(colorTheme)
     val colorThemeFlow = _colorThemeFlow.asStateFlow()
 
@@ -88,5 +95,6 @@ constructor(
         private const val KEY_USER_AGENT = "user_agent"
         private const val KEY_COLOR_THEME = "color_theme"
         private const val KEY_HISTORY_USE_RELATIVE_TIMES = "history_relative_times"
+        private const val KEY_SYNC_TYPE = "sync_type"
     }
 }
