@@ -19,4 +19,7 @@ data class SyncConfig(
     val schedule: SyncSchedule,
     @ColumnInfo(name = "password")
     val password: String = "",
-)
+) {
+    val isValid: Boolean
+        get() = target.isNotEmpty()
+}

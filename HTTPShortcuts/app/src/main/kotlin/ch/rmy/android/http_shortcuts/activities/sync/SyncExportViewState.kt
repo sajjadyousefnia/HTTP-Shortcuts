@@ -7,4 +7,5 @@ import ch.rmy.android.http_shortcuts.data.enums.SyncSchedule
 data class SyncExportViewState(
     val schedule: SyncSchedule,
     val password: String,
+    val hasChanged: Boolean,
 )

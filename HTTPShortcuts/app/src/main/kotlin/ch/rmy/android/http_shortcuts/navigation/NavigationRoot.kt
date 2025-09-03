@@ -156,8 +156,10 @@ fun NavigationRoot() {
             )
         }
 
-        composable(NavigationDestination.SyncOverview) {
-            SyncOverviewScreen()
+        composable(NavigationDestination.SyncOverview) { backStackEntry ->
+            SyncOverviewScreen(
+                backStackEntry.savedStateHandle,
+            )
         }
 
         composable(NavigationDestination.SyncImport) {
