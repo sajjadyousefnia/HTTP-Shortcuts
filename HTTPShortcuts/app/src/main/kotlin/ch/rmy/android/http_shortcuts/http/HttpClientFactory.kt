@@ -14,6 +14,7 @@ import ch.rmy.android.http_shortcuts.data.enums.ProxyType
 import ch.rmy.android.http_shortcuts.exceptions.ClientCertException
 import ch.rmy.android.http_shortcuts.exceptions.InvalidProxyException
 import ch.rmy.android.http_shortcuts.exceptions.NoIpAddressException
+import ch.rmy.android.http_shortcuts.logging.TimberOkHttpEventListener
 import com.burgstaller.okhttp.digest.Credentials
 import java.net.Authenticator
 import java.net.Inet4Address
@@ -47,6 +48,7 @@ constructor() {
     private val baseClient = OkHttpClient.Builder()
         .fastFallback(true)
         .connectionSpecs(listOf(ConnectionSpec.MODERN_TLS, ConnectionSpec.CLEARTEXT))
+        .eventListenerFactory(TimberOkHttpEventListener)
         .build()
 
     private val coroutineScope = CoroutineScope(Dispatchers.Default)
