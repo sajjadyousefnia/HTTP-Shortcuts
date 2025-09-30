@@ -22,13 +22,13 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import ch.rmy.android.framework.extensions.consume
-import ch.rmy.android.framework.extensions.logInfo
 import ch.rmy.android.framework.extensions.takeUnlessEmpty
 import ch.rmy.android.framework.navigation.NavigationRequest
 import ch.rmy.android.framework.navigation.NavigationRequestImpl
 import ch.rmy.android.framework.viewmodel.ViewModelEvent
 import ch.rmy.android.http_shortcuts.activities.documentation.DocumentationUrlManager
 import ch.rmy.android.http_shortcuts.components.EventHandler
+import timber.log.Timber
 
 private const val RESULT_KEY = "result"
 
@@ -52,28 +52,35 @@ fun NavigationEventHandler(navController: NavController) {
             is ViewModelEvent.Navigate -> consume {
                 focusManager.clearFocus()
                 val route = event.navigationRequest.route
-                logInfo("Navigation", "Navigating to $route")
+                Timber.tag(NAVIGATION_TAG).i("Navigating to %s", route)
                 navController.navigate(route = route)
             }
             is ViewModelEvent.OpenURL -> {
                 val uri = event.url.toUri()
                 if (DocumentationUrlManager.canHandle(uri)) {
                     consume {
+                        Timber.tag(NAVIGATION_TAG).i("Handling documentation URL %s in-app", uri)
                         navController.navigate(route = NavigationDestination.Documentation.buildRequest(uri).route)
                     }
                 } else {
+                    Timber.tag(NAVIGATION_TAG).i("Delegating URL %s to external handler", event.url)
                     false
                 }
             }
             is ViewModelEvent.CloseScreen -> {
+                Timber.tag(NAVIGATION_TAG).i("Closing screen with result=%s", event.result)
                 focusManager.clearFocus()
                 navController.previousBackStackEntry?.savedStateHandle?.set(RESULT_KEY, event.result)
-                navController.popBackStack()
+                val popped = navController.popBackStack()
+                Timber.tag(NAVIGATION_TAG).d("popBackStack returned %s", popped)
+                popped
             }
             else -> false
         }
     }
 }
+
+private const val NAVIGATION_TAG = "NavigationEvents"
 
 fun NavGraphBuilder.composable(
     destination: NavigationDestination,

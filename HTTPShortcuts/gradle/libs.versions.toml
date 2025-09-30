@@ -50,6 +50,7 @@ quickJsWrapper = "3.2.3"
 room = "2.8.0"
 reorderable = "3.0.0"
 taskerplugin = "0.4.10"
+timber = "5.0.1"
 unmockplugin = "0.9.0"
 workRuntime = "2.10.4"
 zip4j = "2.11.5"
@@ -119,6 +120,7 @@ room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 taskerplugin = { module = "com.joaomgcd:taskerpluginlibrary", version.ref = "taskerplugin" }
+timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 unmock = { module = "com.github.bjoernq:unmockplugin", version.ref = "unmockplugin" }
 zip4j = { module = "net.lingala.zip4j:zip4j", version.ref = "zip4j" }
 zoomable = { module = "net.engawapg.lib:zoomable", version.ref = "zoomable" }

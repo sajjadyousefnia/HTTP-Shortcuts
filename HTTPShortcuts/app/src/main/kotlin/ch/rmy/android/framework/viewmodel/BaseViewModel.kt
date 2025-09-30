@@ -26,6 +26,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 abstract class BaseViewModel<InitData : Any, ViewState : Any>(application: Application) : AndroidViewModel(application) {
 
@@ -43,6 +44,7 @@ abstract class BaseViewModel<InitData : Any, ViewState : Any>(application: Appli
     private val inProgress = MutableStateFlow(0)
 
     protected suspend fun emitEvent(event: ViewModelEvent) {
+        Timber.tag(EVENT_TAG).d("Emitting %s from %s", event, this::class.java.name)
         eventChannel.send(event)
     }
 
@@ -197,5 +199,9 @@ abstract class BaseViewModel<InitData : Any, ViewState : Any>(application: Appli
 
     protected suspend fun sendBroadcast(intent: Intent) {
         emitEvent(ViewModelEvent.SendBroadcast(intent))
+    }
+
+    private companion object {
+        private const val EVENT_TAG = "EventFlow"
     }
 }

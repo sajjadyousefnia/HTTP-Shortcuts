@@ -7,6 +7,7 @@ import ch.rmy.android.framework.extensions.GlobalLogger
 import ch.rmy.android.framework.extensions.logException
 import ch.rmy.android.http_shortcuts.data.settings.UserPreferences
 import ch.rmy.android.http_shortcuts.logging.Logging
+import ch.rmy.android.http_shortcuts.logging.TimberInitializer
 import ch.rmy.android.http_shortcuts.utils.DarkThemeHelper
 import ch.rmy.android.http_shortcuts.utils.LocaleHelper
 import dagger.hilt.android.HiltAndroidApp
@@ -36,6 +37,7 @@ class Application : android.app.Application(), Configuration.Provider {
 
     override fun onCreate() {
         super.onCreate()
+        TimberInitializer.init()
         localeHelper.applyLocaleFromSettings()
 
         Security.insertProviderAt(Conscrypt.newProvider(), 1)
