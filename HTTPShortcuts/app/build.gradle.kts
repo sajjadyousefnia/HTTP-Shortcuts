@@ -364,6 +364,9 @@ dependencies {
     /* Reading & writing zip files for Import & Export */
     implementation(libs.zip4j)
 
+    /* Logging */
+    implementation(libs.timber)
+
     /* Google Assistant integration */
     "releaseFullImplementation"(libs.androidx.googleShortcuts)
 
