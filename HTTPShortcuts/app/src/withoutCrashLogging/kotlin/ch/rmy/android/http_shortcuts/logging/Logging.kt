@@ -4,9 +4,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import ch.rmy.android.framework.extensions.showToast
 import ch.rmy.android.http_shortcuts.BuildConfig
+import timber.log.Timber
 
 @SuppressLint("StaticFieldLeak")
 object Logging : ch.rmy.android.framework.extensions.Logging {
@@ -18,6 +18,7 @@ object Logging : ch.rmy.android.framework.extensions.Logging {
     fun initCrashReporting(context: Context) {
         if (BuildConfig.DEBUG) {
             this.context = context
+            Timber.tag(TAG).i("Initialized debug logging context")
         }
     }
 
@@ -30,7 +31,7 @@ object Logging : ch.rmy.android.framework.extensions.Logging {
 
     override fun logException(origin: String?, e: Throwable) {
         if (BuildConfig.DEBUG) {
-            Log.e(origin ?: TAG, "An error occurred", e)
+            Timber.tag(origin ?: TAG).e(e, "An error occurred")
             e.printStackTrace()
             Handler(Looper.getMainLooper()).post {
                 context?.showToast("Error: $e", long = true)
@@ -40,7 +41,7 @@ object Logging : ch.rmy.android.framework.extensions.Logging {
 
     override fun logInfo(origin: String?, message: String) {
         if (BuildConfig.DEBUG) {
-            Log.i(origin ?: TAG, message)
+            Timber.tag(origin ?: TAG).i(message)
         }
     }
 }

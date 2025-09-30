@@ -16,6 +16,7 @@ import java.time.Instant
 import kotlin.time.Duration.Companion.days
 import kotlin.time.times
 import kotlinx.coroutines.CancellationException
+import timber.log.Timber
 
 object Logging : ch.rmy.android.framework.extensions.Logging {
 
@@ -29,6 +30,7 @@ object Logging : ch.rmy.android.framework.extensions.Logging {
     fun initCrashReporting(context: Context) {
         val userPreferences = UserPreferences(context)
         if (isAppOutdated || !userPreferences.isCrashReportingAllowed) {
+            Timber.tag(TAG).w("Skipping crash reporting initialization (outdated=%s, allowed=%s)", isAppOutdated, userPreferences.isCrashReportingAllowed)
             return
         }
 
@@ -45,6 +47,7 @@ object Logging : ch.rmy.android.framework.extensions.Logging {
             event.originalError?.let { !shouldIgnore(it) } != false
         }
         initialized = true
+        Timber.tag(TAG).i("Crash reporting initialized")
     }
 
     private fun createBugsnagConfig() =
@@ -75,7 +78,13 @@ object Logging : ch.rmy.android.framework.extensions.Logging {
     }
 
     override fun logException(origin: String?, e: Throwable) {
-        if (initialized && !shouldIgnore(e)) {
+        val tag = origin ?: TAG
+        if (shouldIgnore(e)) {
+            Timber.tag(tag).d(e, "Ignored exception")
+            return
+        }
+        Timber.tag(tag).e(e, "An error occurred")
+        if (initialized) {
             Bugsnag.notify(e)
         }
     }
@@ -88,8 +97,11 @@ object Logging : ch.rmy.android.framework.extensions.Logging {
             e.stackTrace.any { it.className.contains("Miui") }
 
     override fun logInfo(origin: String?, message: String) {
+        Timber.tag(origin ?: TAG).i(message)
         if (initialized) {
             Bugsnag.leaveBreadcrumb("${origin?.plus(": ") ?: ""}$message")
         }
     }
+
+    private const val TAG = "Logging"
 }
